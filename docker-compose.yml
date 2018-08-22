@@ -1,0 +1,21 @@
+version: '3'
+services:
+    chat:
+      container_name: 'test_iad_chat'
+      build: '.'
+      ports:
+        - '80:80'
+      volumes:
+        - ./src:/var/www
+      links:
+        - chat_db
+    chat_db:
+      container_name: 'test_iad_chat_db'
+      image: 'mysql:5'
+      ports:
+        - '33027:3306'
+      environment:
+        - MYSQL_DATABASE=test_iad_chat
+        - MYSQL_PASSWORD=KLzanTatgAazs556
+        - MYSQL_ROOT_PASSWORD=mmw6JNvvLCxT48ch
+        - MYSQL_USER=iad
