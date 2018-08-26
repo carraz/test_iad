@@ -45,7 +45,12 @@ class Template
                 $data[$key] = $this->secureTemplateData($datum);
                 continue;
             }
-            $data[$key] = htmlspecialchars($datum);
+
+            if (is_string($datum)) {
+                $data[$key] = htmlspecialchars($datum);
+                continue;
+            }
+            $data[$key] = $datum;
         }
 
         return $data;

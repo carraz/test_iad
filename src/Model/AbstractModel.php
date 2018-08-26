@@ -92,7 +92,7 @@ abstract class AbstractModel implements ModelInterface
         $models = [];
         $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
         foreach ($results as $row) {
-            $models = new static($row);
+            $models[] = new static($row);
         }
 
         return $models;

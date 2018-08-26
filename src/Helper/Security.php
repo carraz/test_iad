@@ -31,10 +31,19 @@ class Security
     public function isLogged()
     {
         if ($this->sessionStarted) {
-            return isset($_SESSION['isLogged']) && $_SESSION['isLogged'];
+            return isset($_SESSION['userLogged']);
         }
 
         return false;
+    }
+
+    public function getLoggedUser()
+    {
+        if ($this->sessionStarted && isset($_SESSION['userLogged'])) {
+            return  $_SESSION['userLogged'];
+        }
+
+        return null;
     }
 
     /**
@@ -58,7 +67,7 @@ class Security
             $this->startSession();
         }
 
-        $_SESSION['isLogged'] = true;
+        $_SESSION['userLogged'] = $user->getId();
         return true;
     }
 

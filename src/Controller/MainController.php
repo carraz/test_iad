@@ -3,6 +3,8 @@
 namespace Controller;
 
 use Helper\Template;
+use Model\Message;
+use Model\User;
 
 class MainController extends BaseController
 {
@@ -14,7 +16,27 @@ class MainController extends BaseController
             $this->redirect('?controller=LoginController&action=login');
         }
 
-        $template = new Template(self::MAIN_TEMPLATE_PATH);
+        $errors = [];
+
+        if ($this->request->getMethod() == 'POST') {
+            $post = $this->request->getAllPostData();
+            $message = new Message($post);
+            if ($message->validate()) {
+                /** @var User $connectedUser */
+                $connectedUser = User::getOneById($this->security->getLoggedUser());
+                $message->setUser($connectedUser);
+                $message->setCreatedAt(new \DateTime());
+                $message->save();
+
+                $this->redirect('?controller=MainController&action=main');
+            }
+
+            $errors = $message->getErrorValidation();
+        }
+
+        $messages = Message::getAll();
+
+        $template = new Template(self::MAIN_TEMPLATE_PATH, ['messages' => $messages, 'errors' => $errors]);
         return $template->display();
     }
 }
