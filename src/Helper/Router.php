@@ -51,6 +51,11 @@ class Router
             if (! method_exists($controller, $action)) {
                 throw new NotFoundException('Action ' . addslashes($action) . ' does not exist');
             }
+
+            $security = new Security();
+            $security->startSession();
+            $controller->setSecurity($security);
+
             return $controller->$action();
         } catch (ClassNotFoundException $e) {
             throw new NotFoundException($e->getMessage());

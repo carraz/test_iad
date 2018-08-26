@@ -15,21 +15,29 @@ class Request
      * @var array
      */
     private $get;
+
     /**
      * @var array
      */
     private $post;
 
     /**
+     * @var string
+     */
+    private $method;
+
+    /**
      * Request constructor.
      *
+     * @param       $method
      * @param array $get
      * @param array $post
      */
-    public function __construct(array $get = [], array $post = [])
+    public function __construct($method, array $get = [], array $post = [])
     {
-        $this->get  = $this->secureRequestData($get);
-        $this->post = $this->secureRequestData($post);
+        $this->get    = $this->secureRequestData($get);
+        $this->post   = $this->secureRequestData($post);
+        $this->method = $method;
     }
 
     /**
@@ -98,5 +106,13 @@ class Request
     public function getAllGetData()
     {
         return $this->get;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethod()
+    {
+        return $this->method;
     }
 }

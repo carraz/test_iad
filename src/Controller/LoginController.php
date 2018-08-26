@@ -10,7 +10,29 @@ class LoginController extends BaseController
 
     public function login()
     {
-        $template = new Template(self::LOGIN_TEMPLATE_PATH, ['test' => '<div>']);
+        if ($this->security->isLogged()) {
+            $this->redirect('?controller=MainController&action=main');
+        }
+
+        $templateVars = [
+            'errorMessage' => false
+        ];
+
+        if ($this->request->getMethod() == 'POST') {
+            $post = $this->request->getAllPostData();
+            $templateVars['errorMessage'] = 'Merci d\'entrer un identifiant et un mot de passe';
+
+            if (!empty($post['login']) && !empty($post['password'])) {
+                $isLogged = $this->security->logUser($post['login'], $post['password']);
+
+                if ($isLogged) {
+                    $this->redirect('?controller=MainController&action=main');
+                }
+                $templateVars['errorMessage'] = 'L\'identifiant ou le mot de passe est incorrect';
+            }
+        }
+
+        $template = new Template(self::LOGIN_TEMPLATE_PATH, $templateVars);
         return $template->display();
     }
 }

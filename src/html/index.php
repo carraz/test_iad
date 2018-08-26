@@ -4,7 +4,7 @@ require_once '../var/autoloader.php';
 
 try {
     //Secure request data
-    $request = new \Helper\Request($_GET, $_POST);
+    $request = new \Helper\Request($_SERVER['REQUEST_METHOD'], $_GET, $_POST);
 
     //route to the good controller and display data
     $router  = new \Helper\Router($request);
