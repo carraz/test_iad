@@ -34,11 +34,21 @@ class Template
         }
 
         $this->templatePath = $templatePath;
-        $this->templateData = [];
+        $this->templateData = $this->secureTemplateData($templateData);
+    }
 
+    private function secureTemplateData(array $templateData)
+    {
+        $data = [];
         foreach ($templateData as $key => $datum) {
-            $this->templateData[$key] = htmlspecialchars($datum);
+            if (is_array($datum)) {
+                $data[$key] = $this->secureTemplateData($datum);
+                continue;
+            }
+            $data[$key] = htmlspecialchars($datum);
         }
+
+        return $data;
     }
 
     /**

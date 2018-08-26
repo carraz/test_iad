@@ -12,6 +12,18 @@ interface ModelInterface
     public function __construct(array $data);
 
     /**
+     * Saves the current model in database
+     * @return AbstractModel
+     */
+    public function save();
+
+    /**
+     * Validate fields of model
+     * @return bool
+     */
+    public function validate();
+
+    /**
      * Returns SQL request for all results
      * @return string
      */

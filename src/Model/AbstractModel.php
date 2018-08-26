@@ -11,6 +11,11 @@ abstract class AbstractModel implements ModelInterface
     protected $id;
 
     /**
+     * @var array
+     */
+    protected $errorValidation;
+
+    /**
      * @return string
      */
     public function getId()
@@ -27,11 +32,29 @@ abstract class AbstractModel implements ModelInterface
      */
     public function __construct(array $data)
     {
+        $this->errorValidation = [];
         foreach ($data as $key => $value) {
             if (! property_exists($this, $key)) {
                 throw new \Exception('Property ' . addslashes($key) . ' does not exist in class ' . get_class($this));
             }
             $this->$key = $value;
+        }
+    }
+
+    /**
+     * @param string $sql
+     * @param array $params
+     */
+    protected function saveModel($sql, array $params)
+    {
+        $db = Database::getInstance();
+        $statement = $db->prepare($sql);
+
+        if (!$statement->execute($params)) {
+            throw new \Exception('Unable to create or update object');
+        }
+        if (empty($this->id)) {
+            $this->id = $db->lastInsertId();
         }
     }
 
@@ -95,5 +118,18 @@ abstract class AbstractModel implements ModelInterface
     public static function getOneById($id)
     {
         return static::getModelResult(static::getOneSql(), ['id' => $id], true);
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrorValidation()
+    {
+        return $this->errorValidation;
+    }
+
+    public function validate()
+    {
+        return count($this->errorValidation) == 0;
     }
 }

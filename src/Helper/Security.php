@@ -72,7 +72,7 @@ class Security
         session_destroy();
     }
 
-    private function encryptPassword($username, $password)
+    public function encryptPassword($username, $password)
     {
         return password_hash($password, PASSWORD_DEFAULT, ['salt' => md5($username)]);
     }
