@@ -35,4 +35,10 @@ class LoginController extends BaseController
         $template = new Template(self::LOGIN_TEMPLATE_PATH, $templateVars);
         return $template->display();
     }
+
+    public function logout()
+    {
+        $this->security->logOut();
+        $this->redirect('?controller=LoginController&action=login');
+    }
 }

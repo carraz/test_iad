@@ -1,4 +1,7 @@
-<?php $title = 'Chat' ?>
+<?php
+$title = 'Chat';
+$displayLogout = true;
+?>
 <?php ob_start() ?>
 
 Page principale

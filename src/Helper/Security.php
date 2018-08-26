@@ -62,6 +62,16 @@ class Security
         return true;
     }
 
+    public function logOut()
+    {
+        if (! $this->isLogged()) {
+            return;
+        }
+
+        unset($_SESSION);
+        session_destroy();
+    }
+
     private function encryptPassword($username, $password)
     {
         return password_hash($password, PASSWORD_DEFAULT, ['salt' => md5($username)]);

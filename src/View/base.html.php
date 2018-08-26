@@ -6,6 +6,15 @@
     <link rel="stylesheet" href="public/style.css">
 </head>
 <body>
-<?php echo $content ?>
+    <div class="header">
+        <?php if ($displayLogout) { ?>
+        <div class="logout">
+            <a href="?controller=LoginController&action=logout">Se déconnecter</a>
+        </div>
+        <? } ?>
+    </div>
+    <div class="content">
+        <?php echo $content ?>
+    </div>
 </body>
 </html>
