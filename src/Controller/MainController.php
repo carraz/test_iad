@@ -18,12 +18,13 @@ class MainController extends BaseController
 
         $errors = [];
 
+        /** @var User $connectedUser */
+        $connectedUser = User::getOneById($this->security->getLoggedUser());
+
         if ($this->request->getMethod() == 'POST') {
             $post = $this->request->getAllPostData();
             $message = new Message($post);
             if ($message->validate()) {
-                /** @var User $connectedUser */
-                $connectedUser = User::getOneById($this->security->getLoggedUser());
                 $message->setUser($connectedUser);
                 $message->setCreatedAt(new \DateTime());
                 $message->save();
@@ -36,7 +37,10 @@ class MainController extends BaseController
 
         $messages = Message::getAll();
 
-        $template = new Template(self::MAIN_TEMPLATE_PATH, ['messages' => $messages, 'errors' => $errors]);
+        $template = new Template(
+            self::MAIN_TEMPLATE_PATH,
+            ['messages' => $messages, 'errors' => $errors, 'connectedUser' => $connectedUser->getLogin()]
+        );
         return $template->display();
     }
 }

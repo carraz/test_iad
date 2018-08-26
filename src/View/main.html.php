@@ -4,15 +4,18 @@ $displayLogout = true;
 ?>
 <?php ob_start() ?>
 
+<div class="current-user">
+    Connecté comme <?php echo $vars['connectedUser'] ?>
+</div>
 <div class="chat">
     <?php
     /** @var \Model\Message $message */
     foreach ($vars['messages'] as $message) { ?>
         <div class="message">
             <span class="login"><?php echo htmlspecialchars($message->getUser()->getLogin()); ?>
-             (<?php echo $message->getCreatedAt()->format('d/m/Y H:i')?>)
+             (<?php echo $message->getCreatedAt()->format('d/m/Y H:i')?>) :
             </span>
-            <span class="messageContent"><?php echo htmlspecialchars($message->getMessage()); ?></span>
+            <span class="messageContent"><?php echo nl2br(htmlspecialchars($message->getMessage())); ?></span>
         </div>
     <?php
     }
@@ -26,6 +29,7 @@ $displayLogout = true;
 <form method="post">
     <div>Votre message</div>
     <textarea id="message-textarea" required="required" name="message"></textarea>
+    <br/>
     <input type="submit" value="Envoyer">
 </form>
 
