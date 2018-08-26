@@ -1,9 +1,9 @@
 <?php
 
-spl_autoload_register(function ($class_name) {
-    $filePath = '../' . str_replace('\\', '/', $class_name) . '.php';
+spl_autoload_register(function ($className) {
+    $filePath = '../' . str_replace('\\', '/', $className) . '.php';
     if (!is_file($filePath)) {
-        throw new \Exception("Class $class_name not found");
+        throw new \Exception\ClassNotFoundException($className);
     }
 
     /** @noinspection PhpIncludeInspection */
