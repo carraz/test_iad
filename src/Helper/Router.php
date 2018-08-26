@@ -36,8 +36,10 @@ class Router
     {
         $controllerName = $this->request->getQuery(self::CONTROLLER_PARAM);
         $action         = $this->request->getQuery(self::ACTION_PARAM);
+
         if (is_null($controllerName) || is_null($action)) {
-            throw new NotFoundException('Controller or action not specified');
+            $controllerName = 'MainController';
+            $action     = 'main';
         }
 
         $controllerFullName = self::CONTROLLER_NAMESPACE . $controllerName;
